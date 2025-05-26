@@ -19,7 +19,6 @@ class Collection(models.Model):
 
     def __str__(self):
         return self.name
-
 class CollectionAsset(models.Model):
     collection = models.ForeignKey('collection.Collection', on_delete=models.CASCADE)
     asset      = models.ForeignKey('assets.Asset',     on_delete=models.CASCADE)

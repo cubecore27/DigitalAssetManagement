@@ -2,15 +2,10 @@ from rest_framework import viewsets
 from .models import *
 from .serializers import *
 
+
 class AssetViewSet(viewsets.ModelViewSet):
     queryset = Asset.objects.all()
     serializer_class = AssetSerializer
-
-
-class CollectionAssetViewSet(viewsets.ModelViewSet):
-    queryset = CollectionAsset.objects.all()
-    serializer_class = CollectionAssetSerializer
-
 
 class AssetCategoryViewSet(viewsets.ModelViewSet):
     queryset = AssetCategory.objects.all()

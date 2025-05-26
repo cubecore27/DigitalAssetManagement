@@ -12,15 +12,6 @@ asset_detail = AssetViewSet.as_view({
     'delete': 'destroy'
 })
 
-collection_asset_list = CollectionAssetViewSet.as_view({
-    'get': 'list',
-    'post': 'create'
-})
-collection_asset_detail = CollectionAssetViewSet.as_view({
-    'get': 'retrieve',
-    'delete': 'destroy'
-})
-
 asset_category_list = AssetCategoryViewSet.as_view({
     'get': 'list',
     'post': 'create'
@@ -78,9 +69,6 @@ activity_detail = AssetActivityViewSet.as_view({
 urlpatterns = [
     path('assets/', asset_list),
     path('assets/<int:pk>/', asset_detail),
-
-    path('collection-assets/', collection_asset_list),
-    path('collection-assets/<int:pk>/', collection_asset_detail),
 
     path('asset-categories/', asset_category_list),
     path('asset-categories/<int:pk>/', asset_category_detail),

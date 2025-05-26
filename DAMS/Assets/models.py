@@ -1,4 +1,5 @@
 # assets/models.py
+
 from django.db import models
 from django.utils import timezone
 
@@ -26,14 +27,15 @@ class Asset(models.Model):
     color_profile     = models.CharField(max_length=64, blank=True)
     metadata_json     = models.JSONField(blank=True, default=dict)
 
-    # Use string references for M2M through models in the same app
+    # Point at Category model in 'categories' app
     categories = models.ManyToManyField(
-        'assets.Category',
+        'categories.Category',
         through='assets.AssetCategory',
         related_name='assets'
     )
+    # Point at Tag model in 'tags' app
     tags = models.ManyToManyField(
-        'assets.Tag',
+        'tags.Tag',
         through='assets.AssetTag',
         related_name='assets'
     )
@@ -43,8 +45,8 @@ class Asset(models.Model):
 
 
 class AssetCategory(models.Model):
-    asset    = models.ForeignKey('assets.Asset',    on_delete=models.CASCADE)
-    category = models.ForeignKey('assets.Category', on_delete=models.CASCADE)
+    asset    = models.ForeignKey('assets.Asset',       on_delete=models.CASCADE)
+    category = models.ForeignKey('categories.Category', on_delete=models.CASCADE)
     assigned_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -53,7 +55,7 @@ class AssetCategory(models.Model):
 
 class AssetTag(models.Model):
     asset = models.ForeignKey('assets.Asset', on_delete=models.CASCADE)
-    tag   = models.ForeignKey('assets.Tag',   on_delete=models.CASCADE)
+    tag   = models.ForeignKey('tags.Tag',       on_delete=models.CASCADE)
     assigned_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

@@ -6,3 +6,6 @@ from .serializers import *
 class CollectionViewSet(viewsets.ModelViewSet):
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
+class CollectionAssetViewSet(viewsets.ModelViewSet):
+    queryset = CollectionAsset.objects.all()
+    serializer_class = CollectionAssetSerializer
