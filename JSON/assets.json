@@ -1,0 +1,109 @@
+{
+    "Assets":[
+        {
+            "id": 1,
+            "title": "Modern Sofa",
+            "description": "A sleek, modern 3D model of a living room sofa.",
+            "file_path": "/media/assets/sofa.glb",
+            "thumbnailUrl": "https://i.pinimg.com/736x/5c/fc/0f/5cfc0fe5e47981d822194d5494a5a859.jpg"
+          },
+          {
+            "id": 2,
+            "title": "Vintage Camera",
+            "description": "3D scan of a classic film camera from the 1950s.",
+            "file_path": "/media/assets/camera.glb",
+            "thumbnailUrl": "https://i.pinimg.com/736x/2a/82/23/2a8223ab93322e35b4e92b2ec45ce4b2.jpg"
+          },
+          {
+            "id": 3,
+            "title": "Low-Poly Tree",
+            "description": "Stylized low-poly tree, perfect for game environments.",
+            "file_path": "/media/assets/tree.glb",
+            "thumbnailUrl": "https://i.pinimg.com/736x/74/07/6b/74076bfce03bd847f751629db6aad9a5.jpg"
+          },
+          {
+            "id": 4,
+            "title": "Office Chair",
+            "description": "Adjustable ergonomic office chair model.",
+            "file_path": "/media/assets/chair.glb",
+            "thumbnailUrl": "https://i.pinimg.com/736x/77/49/6f/77496f48d71ec1f0ded95cb35b7db519.jpg"
+          },
+          {
+            "id": 5,
+            "title": "Retro Television",
+            "description": "A retro TV with wooden casing and knobs.",
+            "file_path": "/public/images/TV.jpg",
+            "thumbnailUrl": "/images/TV.jpg"
+          },
+          {
+            "id": 6,
+            "title": "Modern Sofa",
+            "description": "A sleek, modern 3D model of a living room sofa.",
+            "file_path": "/media/assets/sofa.glb",
+            "thumbnailUrl": "https://i.pinimg.com/736x/1f/1c/e3/1f1ce3e948ad2b77415eee72071332e7.jpg"
+          },
+          {
+            "id": 2,
+            "title": "Vintage Camera",
+            "description": "3D scan of a classic film camera from the 1950s.",
+            "file_path": "/media/assets/camera.glb",
+            "thumbnailUrl": "https://i.pinimg.com/736x/2a/82/23/2a8223ab93322e35b4e92b2ec45ce4b2.jpg"
+          },
+          {
+            "id": 3,
+            "title": "Low-Poly Tree",
+            "description": "Stylized low-poly tree, perfect for game environments.",
+            "file_path": "/media/assets/tree.glb",
+            "thumbnailUrl": "https://i.pinimg.com/736x/8c/8b/42/8c8b4295289490fc550b452d1876d695.jpg"
+          },
+          {
+            "id": 4,
+            "title": "Office Chair",
+            "description": "Adjustable ergonomic office chair model.",
+            "file_path": "/media/assets/chair.glb",
+            "thumbnailUrl": "https://i.pinimg.com/736x/77/49/6f/77496f48d71ec1f0ded95cb35b7db519.jpg"
+          },
+          {
+            "id": 5,
+            "title": "Retro Television",
+            "description": "A retro TV with wooden casing and knobs.",
+            "file_path": "/public/images/TV.jpg",
+            "thumbnailUrl": "/images/TV.jpg"
+          },
+          {
+            "id": 1,
+            "title": "Modern Sofa",
+            "description": "A sleek, modern 3D model of a living room sofa.",
+            "file_path": "/media/assets/sofa.glb",
+            "thumbnailUrl": "https://i.pinimg.com/736x/5c/fc/0f/5cfc0fe5e47981d822194d5494a5a859.jpg"
+          },
+          {
+            "id": 2,
+            "title": "Vintage Camera",
+            "description": "3D scan of a classic film camera from the 1950s.",
+            "file_path": "/media/assets/camera.glb",
+            "thumbnailUrl": "https://i.pinimg.com/736x/2a/82/23/2a8223ab93322e35b4e92b2ec45ce4b2.jpg"
+          },
+          {
+            "id": 3,
+            "title": "Low-Poly Tree",
+            "description": "Stylized low-poly tree, perfect for game environments.",
+            "file_path": "/media/assets/tree.glb",
+            "thumbnailUrl": "https://i.pinimg.com/736x/74/07/6b/74076bfce03bd847f751629db6aad9a5.jpg"
+          },
+          {
+            "id": 4,
+            "title": "Office Chair",
+            "description": "Adjustable ergonomic office chair model.",
+            "file_path": "/media/assets/chair.glb",
+            "thumbnailUrl": "https://i.pinimg.com/736x/77/49/6f/77496f48d71ec1f0ded95cb35b7db519.jpg"
+          },
+          {
+            "id": 5,
+            "title": "Retro Television",
+            "description": "A retro TV with wooden casing and knobs.",
+            "file_path": "/public/images/TV.jpg",
+            "thumbnailUrl": "/images/TV.jpg"
+          }
+    ]
+}

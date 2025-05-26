@@ -29,7 +29,7 @@ export default function ModelViewer({ modelPath }) {
   ];
 
   return (
-    <div style={{ width: '1000px', margin: '0 auto' }}>
+    <div style={{ width: '500px', margin: '0 auto' }}>
       {/* Light rotation slider */}
       <div style={{ margin: '1rem 0', textAlign: 'center' }}>
         <label>
@@ -46,7 +46,7 @@ export default function ModelViewer({ modelPath }) {
       </div>
 
       {/* 3D Canvas */}
-      <div style={{ width: '1000px', height: '800px', border: '1px solid #ccc' }}>
+      <div style={{ width: '500px', height: '500px', border: '1px solid #ccc' }}>
         <Canvas shadows camera={{ position: [5, 5, 5], fov: 50 }}>
           {/* Fill lights */}
           <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={0.5} />

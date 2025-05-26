@@ -1,0 +1,20 @@
+  /* Each card becomes its own block in the column flow */
+  .asset-cell {
+    display: inline-block;      /* shrink-wrap in column */
+    width: 100%;                /* fill column width */
+    margin-bottom: 16px;        /* vertical gutter */
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+    break-inside: avoid;        /* prevent splitting across columns */
+    -webkit-column-break-inside: avoid;  /* Safari */
+    -moz-column-break-inside: avoid;     /* Firefox */
+  }
+  
+  .asset-cell img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  

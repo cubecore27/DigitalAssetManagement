@@ -1,42 +1,99 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* src/components/AssetGrid.css */
+
+.sidebar{
+  display: flex;
+  flex-direction: row;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.asset-grid {
+  column-count: 7;
+  column-gap: 20px;
+  padding: 20px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+/* Responsive column count with more breakpoints */
+@media (max-width: 1800px) {
+  .asset-grid {
+    column-count: 6;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 1500px) {
+  .asset-grid {
+    column-count: 5;
   }
 }
 
-.card {
-  padding: 2em;
+@media (max-width: 1200px) {
+  .asset-grid {
+    column-count: 4;
+  }
 }
 
-.read-the-docs {
-  color: #888;
+@media (max-width: 1000px) {
+  .asset-grid {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .asset-grid {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 480px) {
+  .asset-grid {
+    column-count: 1;
+  }
+}
+
+.asset-cell {
+  break-inside: avoid;
+  margin-bottom: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.asset-cell:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.asset-image-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.asset-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.asset-cell:hover .asset-image {
+  transform: scale(1.02);
+}
+
+.asset-info {
+  padding: 16px;
+}
+
+.asset-title {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+}
+
+.asset-description {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
 }
