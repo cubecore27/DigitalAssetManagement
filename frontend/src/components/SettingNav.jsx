@@ -1,13 +1,13 @@
-// SettingsNav.jsx
 import { NavLink } from "react-router-dom";
+import styles from "./SettingNav.module.css";
 
 export default function SettingsNav() {
   return (
-    <nav className="flex gap-4 p-4 border-b bg-gray-100">
-      <NavLink
+    <div className={styles.nav}>
+            <NavLink
         to="/category"
         className={({ isActive }) =>
-          isActive ? "font-semibold text-blue-600" : "text-gray-600"
+          `${styles.link} ${isActive ? styles.active : ""}`
         }
       >
         Category
@@ -15,7 +15,7 @@ export default function SettingsNav() {
       <NavLink
         to="/database"
         className={({ isActive }) =>
-          isActive ? "font-semibold text-blue-600" : "text-gray-600"
+          `${styles.link} ${isActive ? styles.active : ""}`
         }
       >
         Database
@@ -23,11 +23,11 @@ export default function SettingsNav() {
       <NavLink
         to="/recommendation"
         className={({ isActive }) =>
-          isActive ? "font-semibold text-blue-600" : "text-gray-600"
+          `${styles.link} ${isActive ? styles.active : ""}`
         }
       >
         Recommendation
       </NavLink>
-    </nav>
+    </div>
   );
 }

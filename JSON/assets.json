@@ -32,8 +32,7 @@
             "id": 5,
             "title": "Retro Television",
             "description": "A retro TV with wooden casing and knobs.",
-            "file_path": "/public/images/TV.jpg",
-            "thumbnailUrl": "/images/TV.jpg"
+            "file_path": "/public/images/TV.jpg"
           },
           {
             "id": 6,

@@ -1,0 +1,11 @@
+.assetGrid {
+  column-width: 220px;  /* Minimum column width */
+  padding: 20px;
+
+  /* Remove full width/height */
+  width: auto;
+  height: auto;
+
+  /* Optional: constrain max-width if needed */
+  max-width: 100%;
+}

@@ -5,11 +5,13 @@ import SettingsNav from '../../components/SettingNav'
 export default function SettingCategoryPage() {
   return (
     <>
+    <div className="sidebar">
+      <Sidebar/>
+      <div>
       <SettingsNav/>
-      <div className="sidebar">
-        <Sidebar/>
-        <div>SettingCategoryPage</div>
+      Category
       </div>
+    </div>
     </>
     
   )

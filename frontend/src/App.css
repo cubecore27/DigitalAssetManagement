@@ -5,49 +5,6 @@
   flex-direction: row;
 }
 
-.asset-grid {
-  column-count: 7;
-  column-gap: 20px;
-  padding: 20px;
-}
-
-/* Responsive column count with more breakpoints */
-@media (max-width: 1800px) {
-  .asset-grid {
-    column-count: 6;
-  }
-}
-
-@media (max-width: 1500px) {
-  .asset-grid {
-    column-count: 5;
-  }
-}
-
-@media (max-width: 1200px) {
-  .asset-grid {
-    column-count: 4;
-  }
-}
-
-@media (max-width: 1000px) {
-  .asset-grid {
-    column-count: 3;
-  }
-}
-
-@media (max-width: 768px) {
-  .asset-grid {
-    column-count: 2;
-  }
-}
-
-@media (max-width: 480px) {
-  .asset-grid {
-    column-count: 1;
-  }
-}
-
 .asset-cell {
   break-inside: avoid;
   margin-bottom: 20px;

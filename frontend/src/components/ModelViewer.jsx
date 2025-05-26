@@ -1,11 +1,15 @@
 // src/components/ModelViewer.jsx
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Environment, Bounds } from '@react-three/drei';
+import { OrbitControls, useGLTF, Environment, Bounds, useAnimations } from '@react-three/drei';
 import * as THREE from 'three';
 
-function Model({ url }) {
-  const { scene } = useGLTF(url);
+function Model({ url, playAnimationTrigger }) {
+  const group = useRef();
+  const { scene, animations } = useGLTF(url);
+  const { actions, names } = useAnimations(animations, group);
+
+  // Enable shadows on meshes
   scene.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
@@ -13,20 +17,25 @@ function Model({ url }) {
       if (child.material) child.material.needsUpdate = true;
     }
   });
-  return <primitive object={scene} />;
+
+  // Play animation if triggered
+  React.useEffect(() => {
+    if (playAnimationTrigger && actions && names.length > 0) {
+      actions[names[0]]?.reset().fadeIn(0.5).play();
+    }
+  }, [playAnimationTrigger, actions, names]);
+
+  return <primitive object={scene} ref={group} />;
 }
 
 export default function ModelViewer({ modelPath }) {
-  // Slider state for horizontal light rotation
   const [angleY, setAngleY] = useState(0);
+  const [playAnim, setPlayAnim] = useState(false);
+
   const rad = THREE.MathUtils.degToRad(angleY);
   const radius = 10;
   const height = 5;
-  const lightPos = [
-    Math.sin(rad) * radius,  // x
-    height,                  // y
-    Math.cos(rad) * radius   // z
-  ];
+  const lightPos = [Math.sin(rad) * radius, height, Math.cos(rad) * radius];
 
   return (
     <div style={{ width: '500px', margin: '0 auto' }}>
@@ -45,14 +54,17 @@ export default function ModelViewer({ modelPath }) {
         </label>
       </div>
 
+      {/* Play Animation Button */}
+      <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+        <button onClick={() => setPlayAnim(prev => !prev)}>Play Animation</button>
+      </div>
+
       {/* 3D Canvas */}
       <div style={{ width: '500px', height: '500px', border: '1px solid #ccc' }}>
         <Canvas shadows camera={{ position: [5, 5, 5], fov: 50 }}>
-          {/* Fill lights */}
           <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={0.5} />
           <ambientLight intensity={0.3} />
 
-          {/* Directional key light orbiting horizontally */}
           <directionalLight
             castShadow
             intensity={1.2}
@@ -64,21 +76,18 @@ export default function ModelViewer({ modelPath }) {
             shadow-bias={-0.0001}
           />
 
-          {/* Auto-fit bounds + environment + model */}
           <Suspense fallback={null}>
             <Bounds fit clip margin={1.2}>
               <Environment preset="sunset" background={false} />
-              <Model url={modelPath} />
+              <Model url={modelPath} playAnimationTrigger={playAnim} />
             </Bounds>
           </Suspense>
 
-          {/* Ground to catch shadows */}
           <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
             <planeGeometry args={[50, 50]} />
             <shadowMaterial opacity={0.3} />
           </mesh>
 
-          {/* Controls */}
           <OrbitControls makeDefault target={[0, 0, 0]} />
         </Canvas>
       </div>

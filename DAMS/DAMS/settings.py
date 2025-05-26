@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-jp*@g7)kpg*i3zp=sym7vmkwbkgp=3i+^19(knskz8u+=!5igi
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.100.6', 'localhost']
 
 
 # Application definition
@@ -43,11 +43,12 @@ INSTALLED_APPS = [
     'tags',
     # Third-party
     'rest_framework',
+    "corsheaders",
 
 ]
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/uploaded_assets/'
+MEDIA_ROOT = BASE_DIR / 'uploaded_assets'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -67,7 +68,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+          "corsheaders.middleware.CorsMiddleware",
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:1000",  # Replace with your frontend URL
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'DAMS.urls'
 

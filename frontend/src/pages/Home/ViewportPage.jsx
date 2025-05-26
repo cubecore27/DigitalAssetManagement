@@ -4,7 +4,7 @@ import Sidebar from '../../components/Sidebar';
 import AssetCell from '../../components/assetcell';
 
 export default function ViewportPage() {
-  const modelUrl = '/models/car_scene.glb';
+  const modelUrl = '/models/car.glb';
   return (
     <>
       <div className="sidebar">

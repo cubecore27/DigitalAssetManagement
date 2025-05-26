@@ -1,0 +1,74 @@
+.container {
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+    padding: 16px;
+  }
+  
+  .toggleButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid #333;
+    background: #fff;
+    transition: background 0.3s ease;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: left;
+  }
+  
+  .toggleButton.open {
+    background: #eee;
+  }
+  
+  .panel {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    background: #fafafa;
+  }
+  
+  .searchGroup {
+    margin-bottom: 15px;
+  }
+  
+  .label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .filters {
+    border: none;
+    margin-bottom: 15px;
+    padding: 0;
+  }
+  
+  .legend {
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .filterItem {
+    margin-bottom: 10px;
+  }
+  
+  .searchButton {
+    padding: 10px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
