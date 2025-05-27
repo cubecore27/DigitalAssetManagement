@@ -1,11 +1,229 @@
-.assetGrid {
-  column-width: 220px;  /* Minimum column width */
+/* AssetGrid.module.css - Pinterest-style Masonry Grid */
+
+.gridContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
+}
 
-  /* Remove full width/height */
-  width: auto;
-  height: auto;
+/* Grid Controls */
+.gridControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  gap: 16px;
+}
 
-  /* Optional: constrain max-width if needed */
-  max-width: 100%;
+.controlGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.controlLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.toggleGroup {
+  display: flex;
+  background: #f1f1f1;
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.toggleButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  color: #666;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.toggleButton:hover {
+  background: rgba(230, 0, 35, 0.1);
+  color: #e60023;
+}
+
+.toggleButton.active {
+  background: #e60023;
+  color: white;
+}
+
+.toggleIcon {
+  font-size: 14px;
+}
+
+.sortSelect {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.sortSelect:focus {
+  outline: none;
+  border-color: #e60023;
+}
+
+.assetCount {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Main Grid Layouts */
+.assetGrid {
+  width: 100%;
+}
+
+/* Masonry Layout (Pinterest Style) */
+.masonryLayout {
+  columns: 5;
+  column-gap: 16px;
+  column-fill: balance;
+}
+
+/* Responsive Masonry Columns */
+@media (max-width: 1200px) {
+  .masonryLayout {
+    columns: 4;
+  }
+}
+
+@media (max-width: 992px) {
+  .masonryLayout {
+    columns: 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .masonryLayout {
+    columns: 2;
+    column-gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .masonryLayout {
+    columns: 1;
+  }
+}
+
+/* Uniform Grid Layout */
+.uniformGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .uniformGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .uniformGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 40px;
+}
+
+.emptyIcon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.emptyState h3 {
+  font-size: 24px;
+  color: #333;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.emptyState p {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+  .gridContainer {
+    padding: 16px;
+  }
+  
+  .gridControls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .controlGroup {
+    justify-content: space-between;
+  }
+  
+  .toggleButton {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* Ensure proper masonry behavior */
+.masonryLayout > * {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Loading animation for new content */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.assetGrid > * {
+  animation: fadeInUp 0.5s ease-out;
 }

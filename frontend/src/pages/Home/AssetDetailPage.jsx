@@ -6,6 +6,7 @@ import { OrbitControls, useGLTF, Bounds } from '@react-three/drei';
 import Sidebar from '../../components/Sidebar';
 import RetractableSearchBar from '../../components/RetractableSearchBar';
 import AssetGrid from '../../components/AssetGrid';
+import styles from './AssetDetail.module.css';
 
 const API_BASE = 'http://192.168.100.6:2000/';
 
@@ -108,22 +109,22 @@ function RotationControls({ rotation, isFlipped, onRotationChange, onFlipChange 
     onFlipChange(false);
   };
 
+
+  
+
   return (
     <div style={{ marginBottom: '1rem', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-      <button style={buttonStyle} onClick={() => onRotationChange((rotation + 90) % 360)}>↻ 90°</button>
+      {/* <button style={buttonStyle} onClick={() => onRotationChange((rotation + 90) % 360)}>↻ 90°</button>
       <button style={buttonStyle} onClick={() => onRotationChange((rotation - 90 + 360) % 360)}>↺ 90°</button>
-      <button style={buttonStyle} onClick={() => onRotationChange((rotation + 180) % 360)}>↻ 180°</button>
+      <button style={buttonStyle} onClick={() => onRotationChange((rotation + 180) % 360)}>↻ 180°</button> */}
       <button style={buttonStyle} onClick={() => onFlipChange(!isFlipped)}>⟷ Flip H</button>
       <button style={buttonStyle} onClick={resetAll}>Reset</button>
     </div>
   );
 }
-function Magnifier({ src, zoom = 2, width = 200, height = 200 }) {
+function Magnifier({ src, zoom = 2, width = 100, height = 200 }) {
   const imgRef = useRef(null);
   const lensRef = useRef(null);
-  console.log("Original src:", src);
-console.log("Encoded:", encodeURI(src));
-
 
   // Clean the src to remove invalid characters
   const cleanedSrc = String(src)
@@ -230,38 +231,6 @@ export default function AssetDetail() {
   const is3DModel = /\.(glb|gltf)$/i.test(src);
   const isImage = /\.(jpg|jpeg|png|gif|webp|jfif)$/i.test(src);
 
-  const containerStyle = {
-    padding: '2rem',
-    display: 'flex',
-    justifyContent: 'center',
-  };
-
-  const backButtonStyle = {
-    padding: '10px 20px',
-    marginBottom: '1rem',
-    border: '1px solid #007bff',
-    background: '#007bff',
-    color: 'white',
-    cursor: 'pointer',
-    borderRadius: '4px',
-    fontSize: '14px'
-  };
-
-  const contentWrapperStyle = {
-    maxWidth: '600px',
-    width: '100%',
-    backgroundColor: '#fff',
-    borderRadius: '16px',
-    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)',
-    padding: '2rem',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '1rem',
-  };
-
-
-
   return (
     <>
     <div className="sidebar">
@@ -269,34 +238,38 @@ export default function AssetDetail() {
       <div style={{width: '100%'}}>
           <RetractableSearchBar/>
           <div style={{width: '100%'}}>
-            <div style={containerStyle}>
-              <div style={contentWrapperStyle}>
-                <button style={backButtonStyle} onClick={() => navigate(-1)}>← Back</button>
+            <div className={styles.container}>
+              <div className={styles.wrapper}>
+                {/* <button 
+                className={styles.button}
+                onClick={() => navigate(-1)}>← Back
+                </button> */}
 
                 <div style={{ width: '100%', marginTop: '1rem' }}>
                   {is3DModel ? (
                     <FullModelViewer url={src} />
                   ) : isImage ? (
                     <>
-                      <RotationControls
-                        rotation={rotation}
-                        isFlipped={isFlipped}
-                        onRotationChange={setRotation}
-                        onFlipChange={setIsFlipped}
-                      />
                       <div
-                        onClick={() => setShowFullscreen(true)}
-                        style={{
-                          transform: `rotate(${rotation}deg) scaleX(${isFlipped ? -1 : 1})`,
-                          transition: 'transform 0.3s ease',
-                          width: '100%',
-                          display: 'flex',
-                          justifyContent: 'center'
-                        }}
+                      className={styles.dynamicstyle}
                       >
-                        <Magnifier src={src} zoom={2} />
+                        <div className={styles.left}
+                        onClick={() => setShowFullscreen(true)}>
+                          <Magnifier src={src} zoom={2} />
+                        </div>
+                        <div className={styles.right}>
+                        <RotationControls
+                            rotation={rotation}
+                            isFlipped={isFlipped}
+                            onRotationChange={setRotation}
+                            onFlipChange={setIsFlipped}
+                          />
+                        <h2>{asset.title}</h2>
+                        <p>{asset.description}</p>
+                        </div>
                       </div>
-                      <p style={{ fontSize: '12px', color: '#666', marginTop: '8px', textAlign: 'center' }}>
+
+                      <p style={{ fontSize: '12px', color: '#766', marginTop: '8px', textAlign: 'center' }}>
                         Click image to view fullscreen
                       </p>
                     </>
@@ -304,8 +277,6 @@ export default function AssetDetail() {
                     <p>Preview not supported for this file type.</p>
                   )}
                 </div>
-                <h2 style={{ marginBottom: 0 }}>{asset.title}</h2>
-                <p style={{ textAlign: 'center', color: '#555' }}>{asset.description}</p>
 
                 {showFullscreen && isImage && (
                   <FullscreenModal
