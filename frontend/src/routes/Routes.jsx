@@ -10,13 +10,14 @@ import SettingCategoryPage from '../pages/Settings/SettingCategoryPage';
 import SettingDatabasePage from '../pages/Settings/SettingDatabasePage';
 import SettingRecommendationPage from '../pages/Settings/SettingRecommendationPage';
 import Error from '../pages/Error/Error';
+import AssetDetail from '../pages/Home/AssetDetailPage';
 
 function MainRoutes(){
   return (
     <Routes>
         <Route path="/" element={<InspirePage />}/>
         <Route path="/asset" element={<ViewportPage />}/>
-        <Route path="/asset/:id" element={<AssetDetailPage/>}/>
+        <Route path="/assets/:id" element={<AssetDetail />} />
         <Route path="/add" element={<CreateAssetpage />}/>
 
         {/* Setting Page */}
