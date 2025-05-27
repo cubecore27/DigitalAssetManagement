@@ -56,7 +56,7 @@ export default function AssetCell({ asset }) {
   };
 
   return (
-    <Link to={`/assets/${asset.id}`} className={styles.cellLink}>
+    <a href={`/assets/${asset.id}`} className={styles.cellLink}>
       <div className={styles.assetCell}>
         <div 
           className={styles.mediaWrapper}
@@ -123,6 +123,7 @@ export default function AssetCell({ asset }) {
           </div>
         )}
       </div>
-    </Link>
+    {/* content */}
+    </a>
   );
 }

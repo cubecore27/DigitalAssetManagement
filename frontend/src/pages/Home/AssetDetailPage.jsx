@@ -32,7 +32,7 @@ function FullModelViewer({ url }) {
   );
 }
 
-function FullscreenModal({ src, alt, onClose }) {
+function FullscreenModal({ src, alt, rotation, isFlipped, onClose }) {
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape') onClose();
@@ -40,6 +40,13 @@ function FullscreenModal({ src, alt, onClose }) {
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, [onClose]);
+
+  const transformedStyle = {
+    maxWidth: '95vw',
+    maxHeight: '95vh',
+    objectFit: 'contain',
+    transform: `rotate(${rotation}deg) scaleX(${isFlipped ? -1 : 1})`,
+  };
 
   return (
     <div
@@ -61,11 +68,7 @@ function FullscreenModal({ src, alt, onClose }) {
       <img
         src={src}
         alt={alt}
-        style={{
-          maxWidth: '95vw',
-          maxHeight: '95vh',
-          objectFit: 'contain'
-        }}
+        style={transformedStyle}
         onClick={(e) => e.stopPropagation()}
       />
       <button
@@ -93,7 +96,7 @@ function FullscreenModal({ src, alt, onClose }) {
   );
 }
 
-function RotationControls({ rotation, isFlipped, onRotationChange, onFlipChange }) {
+function RotationControls({ onRotationChange, onFlipChange, rotation, isFlipped }) {
   const buttonStyle = {
     padding: '8px 12px',
     margin: '2px',
@@ -109,28 +112,49 @@ function RotationControls({ rotation, isFlipped, onRotationChange, onFlipChange 
     onFlipChange(false);
   };
 
-
-  
-
   return (
     <div style={{ marginBottom: '1rem', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-      {/* <button style={buttonStyle} onClick={() => onRotationChange((rotation + 90) % 360)}>↻ 90°</button>
-      <button style={buttonStyle} onClick={() => onRotationChange((rotation - 90 + 360) % 360)}>↺ 90°</button>
-      <button style={buttonStyle} onClick={() => onRotationChange((rotation + 180) % 360)}>↻ 180°</button> */}
-      <button style={buttonStyle} onClick={() => onFlipChange(!isFlipped)}>⟷ Flip H</button>
+      <button style={buttonStyle} onClick={() => onRotationChange((rotation + 180) % 360)}>↻ 180°</button>
+      <button style={buttonStyle} onClick={() => onFlipChange(prev => !prev)}>⟷ Flip H</button>
       <button style={buttonStyle} onClick={resetAll}>Reset</button>
     </div>
   );
 }
-function Magnifier({ src, zoom = 2, width = 100, height = 200 }) {
+
+
+function Magnifier({ src, zoom = 2, width = 150, height = 150, rotation = 0, isFlipped = false }) {
   const imgRef = useRef(null);
   const lensRef = useRef(null);
+  const [transformedSrc, setTransformedSrc] = useState(null);
 
-  // Clean the src to remove invalid characters
-  const cleanedSrc = String(src)
-  .replace(/\\/g, '/')
-  .replace(/[^\x20-\x7E]/g, '');
+  const cleanedSrc = String(src).replace(/\\/g, '/').replace(/[^\x20-\x7E]/g, '');
 
+  useEffect(() => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = cleanedSrc;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      const angleRad = (rotation * Math.PI) / 180;
+
+      // Calculate canvas size for rotation
+      const sin = Math.abs(Math.sin(angleRad));
+      const cos = Math.abs(Math.cos(angleRad));
+      const newWidth = img.width * cos + img.height * sin;
+      const newHeight = img.width * sin + img.height * cos;
+      canvas.width = newWidth;
+      canvas.height = newHeight;
+
+      ctx.translate(newWidth / 2, newHeight / 2);
+      ctx.rotate(angleRad);
+      ctx.scale(isFlipped ? -1 : 1, 1);
+      ctx.drawImage(img, -img.width / 2, -img.height / 2);
+
+      setTransformedSrc(canvas.toDataURL());
+    };
+  }, [cleanedSrc, rotation, isFlipped]);
 
   const handleMouseMove = (e) => {
     const img = imgRef.current;
@@ -146,13 +170,14 @@ function Magnifier({ src, zoom = 2, width = 100, height = 200 }) {
 
     lens.style.left = `${lensX}px`;
     lens.style.top = `${lensY}px`;
+
     lens.style.backgroundPosition = `-${lensX * zoom}px -${lensY * zoom}px`;
   };
 
   const handleImageLoad = () => {
-    const img = imgRef.current;
     const lens = lensRef.current;
-    if (img && lens) {
+    const img = imgRef.current;
+    if (lens && img && transformedSrc) {
       lens.style.backgroundSize = `${img.width * zoom}px ${img.height * zoom}px`;
     }
   };
@@ -166,7 +191,7 @@ function Magnifier({ src, zoom = 2, width = 100, height = 200 }) {
     >
       <img
         ref={imgRef}
-        src={cleanedSrc}
+        src={transformedSrc || cleanedSrc}
         alt="Zoomable"
         onLoad={handleImageLoad}
         style={{
@@ -183,8 +208,8 @@ function Magnifier({ src, zoom = 2, width = 100, height = 200 }) {
           border: '1px solid #ccc',
           width: `${width}px`,
           height: `${height}px`,
-          // ✅ Use the cleaned source, and wrap in quotes
-          background: `url('${cleanedSrc}') no-repeat`,
+          backgroundImage: `url('${transformedSrc || cleanedSrc}')`,
+          backgroundRepeat: 'no-repeat',
           pointerEvents: 'none',
           zIndex: 100
         }}
@@ -210,65 +235,52 @@ export default function AssetDetail() {
 
   const [assets, setAssets] = useState([]);
   useEffect(() => {
-    fetch('http://192.168.100.6:2000/asset/assets/')
+    fetch(`${API_BASE}asset/assets/`)
       .then(res => res.json())
       .then(data => setAssets(data));
   }, []);
 
   if (!asset) return <p>Loading...</p>;
 
-  const rawPath =
-    asset.file_url ||
-    asset.file_path ||
-    asset.thumbnail_url ||
-    asset.thumbnailUrl;
-
-  const src =
-    rawPath?.startsWith('http://') || rawPath?.startsWith('https://')
-      ? rawPath
-      : `${API_BASE}${rawPath}`;
-
+  const rawPath = asset.file_url || asset.file_path || asset.thumbnail_url || asset.thumbnailUrl;
+  const src = rawPath?.startsWith('http://') || rawPath?.startsWith('https://') ? rawPath : `${API_BASE}${rawPath}`;
   const is3DModel = /\.(glb|gltf)$/i.test(src);
   const isImage = /\.(jpg|jpeg|png|gif|webp|jfif)$/i.test(src);
 
   return (
     <>
-    <div className="sidebar">
-      <Sidebar/>
-      <div style={{width: '100%'}}>
-          <RetractableSearchBar/>
-          <div style={{width: '100%'}}>
+      <div className="sidebar">
+        <Sidebar />
+        <div style={{ width: '100%' }}>
+          <RetractableSearchBar />
+          <div style={{ width: '100%' }}>
             <div className={styles.container}>
               <div className={styles.wrapper}>
-                {/* <button 
-                className={styles.button}
-                onClick={() => navigate(-1)}>← Back
-                </button> */}
-
                 <div style={{ width: '100%', marginTop: '1rem' }}>
                   {is3DModel ? (
                     <FullModelViewer url={src} />
                   ) : isImage ? (
                     <>
-                      <div
-                      className={styles.dynamicstyle}
-                      >
-                        <div className={styles.left}
-                        onClick={() => setShowFullscreen(true)}>
-                          <Magnifier src={src} zoom={2} />
+                      <div className={styles.dynamicstyle}>
+                        <div className={styles.left} onClick={() => setShowFullscreen(true)}>
+                          <Magnifier
+                            src={src}
+                            zoom={2}
+                            rotation={rotation}
+                            isFlipped={isFlipped}
+                          />
                         </div>
                         <div className={styles.right}>
-                        <RotationControls
+                          <RotationControls
                             rotation={rotation}
                             isFlipped={isFlipped}
                             onRotationChange={setRotation}
                             onFlipChange={setIsFlipped}
                           />
-                        <h2>{asset.title}</h2>
-                        <p>{asset.description}</p>
+                          <h2>{asset.title}</h2>
+                          <p>{asset.description}</p>
                         </div>
                       </div>
-
                       <p style={{ fontSize: '12px', color: '#766', marginTop: '8px', textAlign: 'center' }}>
                         Click image to view fullscreen
                       </p>
@@ -282,6 +294,8 @@ export default function AssetDetail() {
                   <FullscreenModal
                     src={src}
                     alt={asset.title || 'Asset'}
+                    rotation={rotation}
+                    isFlipped={isFlipped}
                     onClose={() => setShowFullscreen(false)}
                   />
                 )}
@@ -289,9 +303,8 @@ export default function AssetDetail() {
             </div>
           </div>
           <AssetGrid assets={assets} />
+        </div>
       </div>
-    </div>
-
     </>
   );
 }

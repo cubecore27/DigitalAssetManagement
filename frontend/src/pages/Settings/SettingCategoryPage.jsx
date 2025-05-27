@@ -7,7 +7,8 @@ export default function SettingCategoryPage() {
     <>
     <div className="sidebar">
       <Sidebar/>
-      <div>
+      <div
+      style={{width: '100%'}}>
       <SettingsNav/>
       Category
       </div>

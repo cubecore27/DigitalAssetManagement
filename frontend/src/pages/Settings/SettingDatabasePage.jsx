@@ -7,7 +7,8 @@ export default function SettingDatabasePage() {
     <>
       <div className="sidebar">
         <Sidebar/>
-        <div>
+        <div
+        style={{width: '100%'}}>
           <SettingsNav/>
           database
         </div>
