@@ -1,0 +1,73 @@
+.container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  
+    /* Optional: reserve vertical space to prevent jump */
+    min-height: 600px;
+  }
+
+.title {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sliderContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 1rem;
+  user-select: none;
+}
+
+.sliderLabel {
+  min-width: 140px;
+  text-align: right;
+}
+
+.sliderInput {
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+.buttonContainer {
+  text-align: center;
+}
+
+.playButton {
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.playButton.playing {
+  background-color: #ff6b6b;
+}
+
+.playButton.stopped {
+  background-color: #4caf50;
+}
+
+.canvasWrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    min-height: 400px; /* or your desired fixed height */
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+    background-color: #ddd;
+  }
+  

@@ -35,6 +35,13 @@
   align-items: flex-start;
 }
 
+.staticstyle {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+
 .left {
   flex: 1;
   display: flex;

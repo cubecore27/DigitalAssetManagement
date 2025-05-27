@@ -7,6 +7,7 @@ import Sidebar from '../../components/Sidebar';
 import RetractableSearchBar from '../../components/RetractableSearchBar';
 import AssetGrid from '../../components/AssetGrid';
 import styles from './AssetDetail.module.css';
+import ModelViewer from '../../components/ModelViewer';
 
 const API_BASE = 'http://192.168.100.6:2000/';
 
@@ -258,7 +259,22 @@ export default function AssetDetail() {
               <div className={styles.wrapper}>
                 <div style={{ width: '100%', marginTop: '1rem' }}>
                   {is3DModel ? (
-                    <FullModelViewer url={src} />
+                    <>
+                      <div className={styles.staticstyle}>
+                        <ModelViewer modelPath={src} />
+                        <div className={styles.right}>
+                          <RotationControls
+                            rotation={rotation}
+                            isFlipped={isFlipped}
+                            onRotationChange={setRotation}
+                            onFlipChange={setIsFlipped}
+                          />
+                          <h2>{asset.title}</h2>
+                          <p>{asset.description}</p>
+                        </div>
+                      </div>
+                    </>
+
                   ) : isImage ? (
                     <>
                       <div className={styles.dynamicstyle}>

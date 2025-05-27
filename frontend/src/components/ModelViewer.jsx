@@ -63,7 +63,7 @@ export default function ModelViewer({ modelPath }) {
       <div style={{ width: '500px', height: '500px', border: '1px solid #ccc' }}>
         <Canvas shadows camera={{ position: [5, 5, 5], fov: 50 }}>
           <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={0.5} />
-          <ambientLight intensity={0.3} />
+          <ambientLight intensity={10} />
 
           <directionalLight
             castShadow
