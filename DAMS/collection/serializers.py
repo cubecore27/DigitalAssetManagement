@@ -7,6 +7,7 @@ class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
         fields = '__all__'
+        read_only_fields = ['slug']
 
 
 class CollectionAssetSerializer(serializers.ModelSerializer):

@@ -5,8 +5,13 @@ from django.utils import timezone
 
 class Asset(models.Model):
     ASSET_TYPE_CHOICES = [
-        ('images', 'Images'),
-        ('3d_files', '3D Files'),
+        ('image', 'Image'),
+        ('video', 'Video'),
+        ('audio', 'Audio'),
+        ('document', 'Document'),
+        ('text', 'Text'),
+        ('other', 'Other'),
+        ('unknown', 'Unknown'),
     ]
     filename          = models.CharField(max_length=255)
     original_filename = models.CharField(max_length=255)
@@ -31,13 +36,17 @@ class Asset(models.Model):
     categories = models.ManyToManyField(
         'categories.Category',
         through='assets.AssetCategory',
-        related_name='assets'
+        related_name='assets',
+        null=True,
+        blank=True
     )
     # Point at Tag model in 'tags' app
     tags = models.ManyToManyField(
         'tags.Tag',
         through='assets.AssetTag',
-        related_name='assets'
+        related_name='assets',
+        null=True,
+        blank=True
     )
 
     def __str__(self):
