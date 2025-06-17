@@ -99,13 +99,13 @@ function FullscreenModal({ src, alt, rotation, isFlipped, onClose }) {
 
 function RotationControls({ onRotationChange, onFlipChange, rotation, isFlipped }) {
   const buttonStyle = {
-    padding: '8px 12px',
-    margin: '2px',
-    border: '1px solid #ccc',
-    background: '#f5f5f5',
-    cursor: 'pointer',
-    borderRadius: '4px',
-    fontSize: '14px'
+    // padding: '8px 12px',
+    // margin: '2px',
+    // border: '1px solid #ccc',
+    background: '#acacac',
+    // cursor: 'pointer',
+    // borderRadius: '4px',
+    // fontSize: '14px'
   };
 
   const resetAll = () => {

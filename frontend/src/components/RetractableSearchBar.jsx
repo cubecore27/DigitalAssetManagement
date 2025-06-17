@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+// components/RetractableSearchBar.jsx
+import React, { useState, useEffect } from 'react';
 import styles from './RetractableSearchBar.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faFilter } from '@fortawesome/free-solid-svg-icons';
 
-const SearchNavbar = () => {
+export default function RetractableSearchBar({ searchQuery, setSearchQuery, assetType, setAssetType }) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -14,7 +15,13 @@ const SearchNavbar = () => {
     >
       <div className={styles.topRow}>
         <FontAwesomeIcon icon={faSearch} className={styles.icon} />
-        <input type="text" className={styles.searchInput} placeholder="Search assets..." />
+        <input
+          type="text"
+          className={styles.searchInput}
+          placeholder="Search assets..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
       </div>
 
       {hovered && (
@@ -22,25 +29,19 @@ const SearchNavbar = () => {
           <div className={styles.filterRow}>
             <FontAwesomeIcon icon={faFilter} className={styles.icon} />
             <label>Type:</label>
-            <select>
+            <select value={assetType} onChange={(e) => setAssetType(e.target.value)}>
               <option value="">All</option>
-              <option value="images">Images</option>
-              <option value="3d">3D Files</option>
-            </select>
-          </div>
-          <div className={styles.filterRow}>
-            <label>Size:</label>
-            <select>
-              <option value="">Any</option>
-              <option value="small">Small (&lt;1MB)</option>
-              <option value="medium">Medium (1–10MB)</option>
-              <option value="large">Large (&gt;10MB)</option>
+              <option value="image">Image</option>
+              <option value="video">Video</option>
+              <option value="audio">Audio</option>
+              <option value="document">Document</option>
+              <option value="text">Text</option>
+              <option value="other">Other</option>
+              <option value="unknown">Unknown</option>
             </select>
           </div>
         </div>
       )}
     </div>
   );
-};
-
-export default SearchNavbar;
+}

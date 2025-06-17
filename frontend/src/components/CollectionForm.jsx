@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './CollectionManager.module.css';
 
-const API_URL = 'http://localhost:8000/collections/'; // adjust if needed
+const API_URL = 'http://localhost:2000/collection/collections/';
 
 const CollectionForm = ({ initialData, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -68,14 +68,23 @@ const CollectionForm = ({ initialData, onSuccess }) => {
         />
       </label>
 
-      <label>
+      <label className={styles.colorLabel}>
         Color:
-        <input
-          type="color"
-          name="color_hex"
-          value={formData.color_hex}
-          onChange={handleChange}
-        />
+        <div className={styles.colorPickerRow}>
+          <input
+            type="color"
+            name="color_hex"
+            value={formData.color_hex}
+            onChange={handleChange}
+          />
+          <div className={styles.colorDisplay}>
+            <span
+              className={styles.colorSwatch}
+              style={{ backgroundColor: formData.color_hex }}
+            />
+            <span className={styles.colorCode}>{formData.color_hex}</span>
+          </div>
+        </div>
       </label>
 
       <button type="submit">{initialData ? 'Update' : 'Create'}</button>

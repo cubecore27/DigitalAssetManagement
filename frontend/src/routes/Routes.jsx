@@ -14,6 +14,8 @@ import AssetDetail from '../pages/Home/AssetDetailPage';
 import Sidebar from '../components/Sidebar';
 import CollectionManager from '../components/collection';
 import SettingCollectionPage from '../pages/Settings/SettingCollectionPage';
+import CollectionSelector from '../components/CollectionSelector';
+import CollectionViewer from '../components/CollectionViewer';
 
 function MainRoutes(){
   return (
@@ -24,8 +26,14 @@ function MainRoutes(){
           <Routes>
             <Route path="/" element={<InspirePage />} />
             <Route path="/asset" element={<ViewportPage />} />
+            <Route path="/collection" element={<SettingCollectionPage />} />
             <Route path="/assets/:id" element={<AssetDetail />} />
             <Route path="/add" element={<CreateAssetpage />} />
+
+            <Route path="/collections" element={<CollectionSelector />} />
+            <Route path="/collections/:id" element={<CollectionViewer />} />
+
+
             <Route path="/category" element={<SettingCategoryPage />} />
             <Route path="/database" element={<SettingDatabasePage />} />
             <Route path="/recommendation" element={<SettingRecommendationPage />} />

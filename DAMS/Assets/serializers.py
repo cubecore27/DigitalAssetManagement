@@ -23,7 +23,7 @@ class AssetSerializer(serializers.ModelSerializer):
             'category_ids', 'tag_ids',
             'created_at', 'updated_at', 'file_path', 'asset_type',
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at', 'file_path', 'asset_type']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'file_path', 'asset_type', ]
 
     def create(self, validated_data):
         upload_file = validated_data.pop('file')

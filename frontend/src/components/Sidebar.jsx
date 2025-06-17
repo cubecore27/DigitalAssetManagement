@@ -28,7 +28,7 @@ export default function Sidebar() {
         </li>
         <li>
           <NavLink
-            to="/asset"
+            to="/collections"
             className={({ isActive }) =>
               `${styles.link} ${isActive ? styles.active : ""}`
             }
@@ -42,7 +42,7 @@ export default function Sidebar() {
                 <path d="M3 4v16h18V4H3zm16 14H5V6h14v12z" />
               </svg>
             </span>
-            <span className={styles.label}>Asset</span>
+            <span className={styles.label}>Collections</span>
           </NavLink>
         </li>
         <li>

@@ -85,7 +85,6 @@ export default function CreateAsset() {
 
   return (
     <>
-    <SettingsNav/>
       <div className={styles.container}>
       <h2>Create Asset</h2>
 

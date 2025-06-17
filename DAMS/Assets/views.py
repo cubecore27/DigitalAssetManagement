@@ -1,11 +1,18 @@
 from rest_framework import viewsets
 from .models import *
 from .serializers import *
+from rest_framework import viewsets, filters
+from django_filters.rest_framework import DjangoFilterBackend
+from .models import Asset
+from .serializers import AssetSerializer
 
 
 class AssetViewSet(viewsets.ModelViewSet):
     queryset = Asset.objects.all()
     serializer_class = AssetSerializer
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    search_fields = ['title']
+    filterset_fields = ['asset_type']
 
 class AssetCategoryViewSet(viewsets.ModelViewSet):
     queryset = AssetCategory.objects.all()

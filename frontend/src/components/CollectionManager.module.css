@@ -98,3 +98,30 @@
     text-align: center;
   }
   
+  .colorLabel {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .colorPickerRow {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+  }
+  
+  .colorDisplay {
+    display: flex;
+    align-items: center;
+    margin-left: 12px;
+  }
+  
+  .colorSwatch {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    margin-right: 8px;
+  }
+  
+  .colorCode {
+    font-family: monospace;
+  }

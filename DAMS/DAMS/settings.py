@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # Third-party
     'rest_framework',
     "corsheaders",
+    'django_filters'
 
 ]
 
@@ -60,6 +61,9 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',  # ✅ This enables the form-based UI
     ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ]
 }
 
 MIDDLEWARE = [
