@@ -1,138 +1,186 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styles from './CreateAssetpage.module.css';
-import Sidebar from '../../components/Sidebar';
+import styles from './CreateAsset.module.css';
+import SearchNavbar from '../../components/RetractableSearchBar';
+import SettingsNav from '../../components/SettingNav';
 
-const API_BASE = 'http://192.168.100.6:2000';
+const API_BASE = 'http://192.168.100.6:2000/';
 
-export default function CreateAssetpage() {
+export default function CreateAsset() {
   const [file, setFile] = useState(null);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [assetType, setAssetType] = useState(null);
-  const [categoryIds, setCategoryIds] = useState([]);
-  const [tagIds, setTagIds] = useState([]);
+  const [previewUrl, setPreviewUrl] = useState('');
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
+  const [selectedCats, setSelectedCats] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [message, setMessage] = useState('');
 
+  // load categories + tags
   useEffect(() => {
-    axios.get(`${API_BASE}/categories/create/`).then(res => setCategories(res.data));
-    axios.get(`${API_BASE}/tags/tags/`).then(res => setTags(res.data));
+    axios.get(API_BASE + 'categories/categories/')
+      .then(res => setCategories(res.data))
+      .catch(console.error);
+
+    axios.get(API_BASE + 'tags/tags/')
+      .then(res => setTags(res.data))
+      .catch(console.error);
   }, []);
 
-  const detectAssetType = (filename) => {
-    const ext = filename.split('.').pop().toLowerCase();
-    if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'jfif'].includes(ext)) return 'images';
-    if (['glb', 'gltf', 'obj', 'fbx'].includes(ext)) return '3d_files';
-    return 'unknown';
-  };
-
-  const handleFileChange = (e) => {
-    const selected = e.target.files[0];
-    setFile(selected);
-    if (selected) {
-      setAssetType(detectAssetType(selected.name));
-      if (!title) setTitle(selected.name);
+  // generate preview URL
+  useEffect(() => {
+    if (!file) {
+      setPreviewUrl('');
+      return;
     }
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [file]);
+
+  const handleFileChange = e => {
+    setFile(e.target.files[0]);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    if (!file) return alert('Please select a file');
-  
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('asset_type', assetType); // keep as plain string, no stringify
-  
-    // Convert IDs to integers
-    categoryIds.forEach((id) => formData.append('category_ids', parseInt(id)));
-    tagIds.forEach((id) => formData.append('tag_ids', parseInt(id)));
-  
+    if (!file) {
+      setMessage('Please select a file first.');
+      return;
+    }
+    setUploading(true);
+    setMessage('');
+    const form = new FormData();
+    form.append('file', file);
+    form.append('title', title);
+    form.append('description', description);
+    selectedCats.forEach(catId => form.append('category_ids', catId));
+    selectedTags.forEach(tagId => form.append('tag_ids', tagId));
+
     try {
-      await axios.post(`${API_BASE}/asset/assets/`, formData, {
+      await axios.post(API_BASE + 'asset/assets/', form, {
         headers: { 'Content-Type': 'multipart/form-data' },
+        onUploadProgress: ({ loaded, total }) => {
+          setProgress(Math.round((loaded / total) * 100));
+        }
       });
-      alert('Asset created successfully!');
+      setMessage('Upload successful!');
+      // reset form
+      setFile(null);
+      setTitle('');
+      setDescription('');
+      setSelectedCats([]);
+      setSelectedTags([]);
     } catch (err) {
-      console.error(err.response?.data || err);
-      alert('Error creating asset.');
+      console.error(err);
+      setMessage('Upload failed.');
+    } finally {
+      setUploading(false);
+      setProgress(0);
     }
   };
-  
+
   return (
-    <div className='sidebar'>
-      <Sidebar/>
-      <form onSubmit={handleSubmit} className={styles.assetForm}>
-      <h2>Upload New Asset</h2>
+    <>
+    <SettingsNav/>
+      <div className={styles.container}>
+      <h2>Create Asset</h2>
 
-      <label className={styles.label}>
-        File:
-        <input type="file" onChange={handleFileChange} required className={styles.input} />
-      </label>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.field}>
+          <label>File Upload</label>
+          <input type="file" onChange={handleFileChange} />
+        </div>
 
-      <label className={styles.label}>
-        Title:
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-          className={styles.input}
-        />
-      </label>
+          {file && previewUrl && (
+            <div className={styles.preview}>
+              {file.type.startsWith('image/') ? (
+              <img src={previewUrl} alt="preview" />
+            ) : file.type.startsWith('video/') ? (
+              <video src={previewUrl} controls />
+            ) : file.type.startsWith('audio/') ? (
+              <audio src={previewUrl} controls />
+            ) : (
+              <div className={styles.placeholder}>
+                <span>{file.name}</span>
+              </div>
+            )}
+          </div>
+        )}
 
-      <label className={styles.label}>
-        Description:
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className={styles.textarea}
-        ></textarea>
-      </label>
+        <div className={styles.field}>
+          <label>Title</label>
+          <input
+            type="text"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            maxLength={255}
+          />
+        </div>
 
-      <label className={styles.label}>
-        Categories:
-        <select
-          multiple
-          value={categoryIds}
-          onChange={(e) =>
-            setCategoryIds([...e.target.selectedOptions].map((opt) => opt.value))
-          }
-          className={styles.select}
-        >
-          {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
-      </label>
+        <div className={styles.field}>
+          <label>Description</label>
+          <textarea
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+          />
+        </div>
 
-      <label className={styles.label}>
-        Tags:
-        <select
-          multiple
-          value={tagIds}
-          onChange={(e) =>
-            setTagIds([...e.target.selectedOptions].map((opt) => opt.value))
-          }
-          className={styles.select}
-        >
-          {tags.map((tag) => (
-            <option key={tag.id} value={tag.id}>
-              {tag.name}
-            </option>
-          ))}
-        </select>
-      </label>
+        <div className={styles.field}>
+          <label>Categories</label>
+          <select
+            multiple
+            value={selectedCats}
+            onChange={e =>
+              setSelectedCats(Array.from(e.target.selectedOptions, o => o.value))
+            }
+          >
+            {categories.map(cat => (
+              <option key={cat.id} value={cat.id}>
+                {' '.repeat(cat.depth * 2)}{cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <p className={styles.assetType}>Detected asset type: <strong>{assetType || 'N/A'}</strong></p>
+        <div className={styles.field}>
+          <label>Tags</label>
+          <select
+            multiple
+            value={selectedTags}
+            onChange={e =>
+              setSelectedTags(Array.from(e.target.selectedOptions, o => o.value))
+            }
+            className={styles.tagSelect}
+          >
+            {tags.map(tag => (
+              <option key={tag.id} value={tag.id}>
+                {tag.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <button type="submit" className={styles.button}>Submit</button>
-    </form>
+        {uploading && (
+          <div className={styles.progressBar}>
+            <div
+              className={styles.progress}
+              style={{ width: `${progress}%` }}
+            >
+              {progress}%
+            </div>
+          </div>
+        )}
+
+        <button type="submit" disabled={uploading}>
+          {uploading ? 'Uploading…' : 'Upload Asset'}
+        </button>
+        {message && <p className={styles.message}>{message}</p>}
+      </form>
     </div>
-   
+    </>
   );
 }

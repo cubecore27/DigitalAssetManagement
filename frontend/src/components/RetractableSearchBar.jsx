@@ -1,63 +1,46 @@
-import React, { useState } from "react";
-import styles from "./RetractableSearchBar.module.css";
+import React, { useState } from 'react';
+import styles from './RetractableSearchBar.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faFilter } from '@fortawesome/free-solid-svg-icons';
 
-export default function RetractableSearchBar() {
-  const [isOpen, setIsOpen] = useState(false);
+const SearchNavbar = () => {
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <div className={styles.container}>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={`${styles.toggleButton} ${isOpen ? styles.open : ""}`}
-        aria-expanded={isOpen}
-        aria-controls="search-panel"
-      >
-        {isOpen ? "Hide Search & Filters ▲" : "Show Search & Filters ▼"}
-      </button>
+    <div
+      className={`${styles.navbar} ${hovered ? styles.expanded : ''}`}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className={styles.topRow}>
+        <FontAwesomeIcon icon={faSearch} className={styles.icon} />
+        <input type="text" className={styles.searchInput} placeholder="Search assets..." />
+      </div>
 
-      {isOpen && (
-        <div id="search-panel" className={styles.panel}>
-          <div className={styles.searchGroup}>
-            <label htmlFor="searchInput" className={styles.label}>
-              Search
-            </label>
-            <input
-              id="searchInput"
-              type="text"
-              placeholder="Type to search..."
-              className={styles.input}
-            />
+      {hovered && (
+        <div className={styles.filterSection}>
+          <div className={styles.filterRow}>
+            <FontAwesomeIcon icon={faFilter} className={styles.icon} />
+            <label>Type:</label>
+            <select>
+              <option value="">All</option>
+              <option value="images">Images</option>
+              <option value="3d">3D Files</option>
+            </select>
           </div>
-
-          <fieldset className={styles.filters}>
-            <legend className={styles.legend}>Filters</legend>
-
-            <div className={styles.filterItem}>
-              <label>
-                <input type="checkbox" name="filter1" /> Filter Option 1
-              </label>
-            </div>
-            <div className={styles.filterItem}>
-              <label>
-                <input type="checkbox" name="filter2" /> Filter Option 2
-              </label>
-            </div>
-            <div className={styles.filterItem}>
-              <label>
-                <input type="checkbox" name="filter3" /> Filter Option 3
-              </label>
-            </div>
-          </fieldset>
-
-          <button
-            type="button"
-            className={styles.searchButton}
-            onClick={() => alert("Search triggered (not implemented)")}
-          >
-            Search
-          </button>
+          <div className={styles.filterRow}>
+            <label>Size:</label>
+            <select>
+              <option value="">Any</option>
+              <option value="small">Small (&lt;1MB)</option>
+              <option value="medium">Medium (1–10MB)</option>
+              <option value="large">Large (&gt;10MB)</option>
+            </select>
+          </div>
         </div>
       )}
     </div>
   );
-}
+};
+
+export default SearchNavbar;

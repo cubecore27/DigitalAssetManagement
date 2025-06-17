@@ -14,9 +14,7 @@ export default function ViewportPage() {
   const modelUrl = '/models/car.glb';
   return (
     <>
-      <div className="sidebar">
-        <Sidebar/>
-        <div style={{ padding: '2rem', textAlign: 'center' }}>
+            <div style={{ padding: '2rem', textAlign: 'center' }}>
           <h1>3D Model Viewer</h1>
           <ModelViewer modelPath={modelUrl} />
         </div>
@@ -30,7 +28,6 @@ export default function ViewportPage() {
             zoom={3}
           />
         </div>
-      </div>
     </>
 
   )

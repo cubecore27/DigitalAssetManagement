@@ -15,9 +15,7 @@ export default function InspirePage() {
 
   return (
     <>
-    <div className="sidebar">
-          <Sidebar/>
-          <div style={{
+    <div style={{
             width: '100%'
           }}>
             <RetractableSearchBar/>
@@ -25,7 +23,6 @@ export default function InspirePage() {
             width: '100%'
           }}>
             <AssetGrid assets={assets} />
-          </div>
           </div>
     </div>
     </>

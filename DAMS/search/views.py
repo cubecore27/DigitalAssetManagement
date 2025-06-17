@@ -44,33 +44,42 @@ class ImageIndexingView(APIView):
 
 
 class SimilarAssetAPIView(APIView):
-    def post(self, request, *args, **kwargs):
-        asset_id = request.data.get('asset_id')
-        if not asset_id:
-            return Response({'error': 'asset_id is required'}, status=status.HTTP_400_BAD_REQUEST)
-
+    def get(self, request, asset_id, *args, **kwargs):
         asset = get_object_or_404(Asset, id=asset_id)
 
         if asset.asset_type != 'image':
-            return Response({'error': 'Asset is not an image'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Asset is not an image'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
-        # Prepare the environment and image list
         os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
-        # Load all image paths from your Asset model (filter by image type)
         image_qs = Asset.objects.filter(asset_type='image')
         image_list = [a.file_path for a in image_qs]
 
-        # Initialize DeepImageSearch
-        st = Search_Setup(image_list=image_list, model_name='vgg19', pretrained=True, image_count=len(image_list))
-
+        st = Search_Setup(
+            image_list=image_list,
+            model_name='vgg19',
+            pretrained=True,
+            image_count=len(image_list)
+        )
         with patch('builtins.input', return_value='no'):
             st.run_index()
 
-        # Get similar images
-        similar_results = st.get_similar_images(asset.file_path, number_of_images=10)
+        similar_results = st.get_similar_images(asset.file_path, number_of_images=15)
         similar_paths = list(similar_results.values())
 
-        # Map back to Asset IDs
-        similar_assets = Asset.objects.filter(file_path__in=similar_paths).values('id', 'file_path')
-        return Response({'similar_asset_ids': [a['id'] for a in similar_assets]})
+        similar_qs = Asset.objects.filter(file_path__in=similar_paths)
+
+        response_data = []
+        for a in similar_qs:
+            response_data.append({
+                "id": a.id,
+                "title": a.title,
+                "description": a.description,
+                "created_at": a.created_at.isoformat(),
+                "updated_at": a.updated_at.isoformat(),
+                "file_path": a.file_path,
+                "asset_type": a.asset_type,
+            })
+
+        return Response(response_data, status=status.HTTP_200_OK)

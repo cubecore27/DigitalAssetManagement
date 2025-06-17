@@ -11,23 +11,30 @@ import SettingDatabasePage from '../pages/Settings/SettingDatabasePage';
 import SettingRecommendationPage from '../pages/Settings/SettingRecommendationPage';
 import Error from '../pages/Error/Error';
 import AssetDetail from '../pages/Home/AssetDetailPage';
+import Sidebar from '../components/Sidebar';
+import CollectionManager from '../components/collection';
+import SettingCollectionPage from '../pages/Settings/SettingCollectionPage';
 
 function MainRoutes(){
   return (
-    <Routes>
-        <Route path="/" element={<InspirePage />}/>
-        <Route path="/asset" element={<ViewportPage />}/>
-        <Route path="/assets/:id" element={<AssetDetail />} />
-        <Route path="/add" element={<CreateAssetpage />}/>
-
-        {/* Setting Page */}
-        <Route path="/category" element={<SettingCategoryPage />}/>
-        <Route path="/database" element={<SettingDatabasePage />}/>
-        <Route path="/recommendation" element={<SettingRecommendationPage />}/>
-
-        {/* Error Page */}
-        <Route path="/error" element={<Error />}/>
-    </Routes>
+    <>
+      <div style={{ display: "flex" }}>
+        <Sidebar /> {/* stays always on the left */}
+        <div style={{ flex: 1, padding: "1rem" }}>
+          <Routes>
+            <Route path="/" element={<InspirePage />} />
+            <Route path="/asset" element={<ViewportPage />} />
+            <Route path="/assets/:id" element={<AssetDetail />} />
+            <Route path="/add" element={<CreateAssetpage />} />
+            <Route path="/category" element={<SettingCategoryPage />} />
+            <Route path="/database" element={<SettingDatabasePage />} />
+            <Route path="/recommendation" element={<SettingRecommendationPage />} />
+            <Route path="/collection" element={<SettingCollectionPage />} />
+            <Route path="/error" element={<Error />} />
+          </Routes>
+        </div>
+      </div>
+    </>
   );
 }
 

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'collection',
     'tags',
     'search',
+    'settings',
     # Third-party
     'rest_framework',
     "corsheaders",

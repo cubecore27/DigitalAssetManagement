@@ -236,7 +236,7 @@ export default function AssetDetail() {
 
   const [assets, setAssets] = useState([]);
   useEffect(() => {
-    fetch(`${API_BASE}asset/assets/`)
+    fetch(`${API_BASE}search/similar/${id}/`)
       .then(res => res.json())
       .then(data => setAssets(data));
   }, []);
@@ -250,8 +250,6 @@ export default function AssetDetail() {
 
   return (
     <>
-      <div className="sidebar">
-        <Sidebar />
         <div style={{ width: '100%' }}>
           <RetractableSearchBar />
           <div style={{ width: '100%' }}>
@@ -320,7 +318,6 @@ export default function AssetDetail() {
           </div>
           <AssetGrid assets={assets} />
         </div>
-      </div>
     </>
   );
 }

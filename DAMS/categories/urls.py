@@ -1,16 +1,20 @@
-from django.urls import path
-from .views import *
+# categories/urls.py
 
-category_list = CategoryViewSet.as_view({
-    'get': 'list',
-    'post': 'create'
-})
-category_detail = CategoryViewSet.as_view({
-    'get': 'retrieve',
-    'delete': 'destroy'
-})
+from django.urls import path, include
+from .views import CategoryTreeAPIView
+
+from rest_framework.routers import DefaultRouter
+from .views import CategoryViewSet
+
+router = DefaultRouter()
+router.register(r'categories', CategoryViewSet, basename='category')
+
 
 urlpatterns = [
-    path('create/', category_list),
-    path('categories/<int:pk>/', category_detail),
+    path(
+        'tree/',
+        CategoryTreeAPIView.as_view(),   # ← no positional args here
+        name='category-tree'
+    ),
+    path('', include(router.urls)),
 ]

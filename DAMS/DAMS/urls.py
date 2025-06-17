@@ -26,6 +26,7 @@ urlpatterns = [
     path('categories/', include('categories.urls')),
     path('collection/', include('collection.urls')),
     path('search/', include('search.urls')),
+    path('settings/', include('settings.urls')),
 ]
 
 if settings.DEBUG:

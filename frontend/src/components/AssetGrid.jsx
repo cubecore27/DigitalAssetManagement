@@ -1,98 +1,145 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import AssetCell from './AssetCell';
 import styles from './AssetGrid.module.css';
 
-export default function AssetGrid({ assets }) {
-  const [viewMode, setViewMode] = useState('masonry'); // masonry or grid
-  const [sortBy, setSortBy] = useState('default'); // default, title, type
+const VIEW_MODES = {
+  MASONRY: 'masonry',
+  GRID: 'grid'
+};
 
-  // Sort assets based on selected option
-  const sortedAssets = React.useMemo(() => {
-    if (!assets) return [];
-    
-    const assetsCopy = [...assets];
-    
-    switch (sortBy) {
-      case 'title':
-        return assetsCopy.sort((a, b) => 
-          (a.title || '').localeCompare(b.title || '')
-        );
-      case 'type':
-        return assetsCopy.sort((a, b) => {
-          const getType = (asset) => {
-            const path = asset.file_url || asset.file_path || '';
-            if (/\.(glb|gltf|obj|fbx)$/i.test(path)) return '3D';
-            if (/\.(jpg|jpeg|png|gif|webp)$/i.test(path)) return 'Image';
-            return 'File';
-          };
-          return getType(a).localeCompare(getType(b));
-        });
-      default:
-        return assetsCopy;
-    }
+const SORT_OPTIONS = {
+  RECENT: 'recent',
+  TITLE: 'title',
+  TYPE: 'type'
+};
+
+const getAssetType = (asset) => {
+  const path = asset.file_url || asset.file_path || '';
+  if (/\.(glb|gltf|obj|fbx)$/i.test(path)) return '3D';
+  if (/\.(jpg|jpeg|png|gif|webp)$/i.test(path)) return 'Image';
+  return 'File';
+};
+
+const sortAssets = (assets, sortBy) => {
+  const assetsCopy = [...assets];
+  
+  switch (sortBy) {
+    case SORT_OPTIONS.RECENT:
+      // Most recent first (reverse the original order to show newest at top)
+      return assetsCopy.reverse();
+      
+    case SORT_OPTIONS.TITLE:
+      return assetsCopy.sort((a, b) => 
+        (a.title || '').localeCompare(b.title || '')
+      );
+      
+    case SORT_OPTIONS.TYPE:
+      return assetsCopy.sort((a, b) => 
+        getAssetType(a).localeCompare(getAssetType(b))
+      );
+      
+    default:
+      return assetsCopy;
+  }
+};
+
+const EmptyState = () => (
+  <div className={styles.emptyState}>
+    <div className={styles.emptyIcon}>📦</div>
+    <h3>No assets found</h3>
+    <p>Try adjusting your search or browse categories</p>
+  </div>
+);
+
+const GridControls = ({ 
+  viewMode, 
+  setViewMode, 
+  sortBy, 
+  setSortBy, 
+  assetCount 
+}) => (
+  <div className={styles.gridControls}>
+    <div className={styles.controlGroup}>
+      <label className={styles.controlLabel}>View:</label>
+      <div className={styles.toggleGroup}>
+        <button
+          className={`${styles.toggleButton} ${
+            viewMode === VIEW_MODES.MASONRY ? styles.active : ''
+          }`}
+          onClick={() => setViewMode(VIEW_MODES.MASONRY)}
+          aria-label="Masonry view"
+        >
+          <span className={styles.toggleIcon}>⋮⋮</span>
+          Masonry
+        </button>
+        <button
+          className={`${styles.toggleButton} ${
+            viewMode === VIEW_MODES.GRID ? styles.active : ''
+          }`}
+          onClick={() => setViewMode(VIEW_MODES.GRID)}
+          aria-label="Grid view"
+        >
+          <span className={styles.toggleIcon}>⊞</span>
+          Grid
+        </button>
+      </div>
+    </div>
+
+    <div className={styles.controlGroup}>
+      <label className={styles.controlLabel} htmlFor="sort-select">
+        Sort by:
+      </label>
+      <select
+        id="sort-select"
+        value={sortBy}
+        onChange={(e) => setSortBy(e.target.value)}
+        className={styles.sortSelect}
+      >
+        <option value={SORT_OPTIONS.RECENT}>Most Recent</option>
+        <option value={SORT_OPTIONS.TITLE}>Title</option>
+        <option value={SORT_OPTIONS.TYPE}>Type</option>
+      </select>
+    </div>
+
+    <div className={styles.assetCount}>
+      {assetCount} asset{assetCount !== 1 ? 's' : ''}
+    </div>
+  </div>
+);
+
+export default function AssetGrid({ assets }) {
+  const [viewMode, setViewMode] = useState(VIEW_MODES.MASONRY);
+  const [sortBy, setSortBy] = useState(SORT_OPTIONS.RECENT);
+
+  const sortedAssets = useMemo(() => {
+    if (!assets || assets.length === 0) return [];
+    return sortAssets(assets, sortBy);
   }, [assets, sortBy]);
 
   if (!assets || assets.length === 0) {
-    return (
-      <div className={styles.emptyState}>
-        <div className={styles.emptyIcon}>📦</div>
-        <h3>No assets found</h3>
-        <p>Try adjusting your search or browse categories</p>
-      </div>
-    );
+    return <EmptyState />;
   }
 
   return (
     <div className={styles.gridContainer}>
-      {/* Grid Controls */}
-      <div className={styles.gridControls}>
-        <div className={styles.controlGroup}>
-          <label className={styles.controlLabel}>View:</label>
-          <div className={styles.toggleGroup}>
-            <button
-              className={`${styles.toggleButton} ${viewMode === 'masonry' ? styles.active : ''}`}
-              onClick={() => setViewMode('masonry')}
-            >
-              <span className={styles.toggleIcon}>⋮⋮</span>
-              Masonry
-            </button>
-            <button
-              className={`${styles.toggleButton} ${viewMode === 'grid' ? styles.active : ''}`}
-              onClick={() => setViewMode('grid')}
-            >
-              <span className={styles.toggleIcon}>⊞</span>
-              Grid
-            </button>
-          </div>
-        </div>
+      <GridControls
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        assetCount={sortedAssets.length}
+      />
 
-        <div className={styles.controlGroup}>
-          <label className={styles.controlLabel}>Sort by:</label>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className={styles.sortSelect}
-          >
-            <option value="default">Default</option>
-            <option value="title">Title</option>
-            <option value="type">Type</option>
-          </select>
-        </div>
-
-        <div className={styles.assetCount}>
-          {sortedAssets.length} asset{sortedAssets.length !== 1 ? 's' : ''}
-        </div>
-      </div>
-
-      {/* Asset Grid */}
       <div 
         className={`${styles.assetGrid} ${
-          viewMode === 'masonry' ? styles.masonryLayout : styles.uniformGrid
+          viewMode === VIEW_MODES.MASONRY 
+            ? styles.masonryLayout 
+            : styles.uniformGrid
         }`}
       >
         {sortedAssets.map((asset, index) => (
           <AssetCell 
-            key={`${asset.id}-${index}`} 
+            key={asset.id || `asset-${index}`} 
             asset={asset}
           />
         ))}

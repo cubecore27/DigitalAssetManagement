@@ -58,11 +58,11 @@
 
 .toggleButton:hover {
   background: rgba(230, 0, 35, 0.1);
-  color: #e60023;
+  color: #00b4e6;
 }
 
 .toggleButton.active {
-  background: #e60023;
+  background: #485355;
   color: white;
 }
 
@@ -133,9 +133,14 @@
 /* Uniform Grid Layout */
 .uniformGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  /* define however many columns you want; e.g. 3 fixed columns: */
+  grid-template-columns: repeat(3, 1fr);
+  /* ensure items fill each row before starting the next */
+  grid-auto-flow: row;
+  /* gap between items */
   gap: 16px;
 }
+
 
 @media (max-width: 768px) {
   .uniformGrid {

@@ -5,14 +5,14 @@ import CategoryManager from '../../components/category'
 import TagCreator from '../../components/tag'
 import CreateCollection from '../../components/collection'
 
-export default function SettingCategoryPage() {
+export default function SettingCollectionPage() {
   return (
     <>
         <div
         style={{width: '100%'}}>
         <SettingsNav/>
         <div>
-          <CategoryManager/>
+          <CreateCollection/>
         </div>
         </div>
     </>

@@ -4,6 +4,7 @@ import styles from "./SettingNav.module.css";
 export default function SettingsNav() {
   const links = [
     { to: "/category", label: "Category" },
+    { to: "/collection", label: "Collection" },
     { to: "/database", label: "Database" },
     { to: "/recommendation", label: "Recommendation" },
   ];
