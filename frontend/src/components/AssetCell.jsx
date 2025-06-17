@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Bounds } from '@react-three/drei';
 import styles from './AssetCell.module.css';
+import AddToCollectionModal from './AddToCollectionModal'; // 👈 Import the modal component
 
 const API_BASE = 'http://192.168.100.6:2000/';
 
@@ -34,6 +34,7 @@ function MiniModelViewer({ url }) {
 export default function AssetCell({ asset }) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const rawPath =
     asset.thumbnail_url ||
@@ -49,81 +50,89 @@ export default function AssetCell({ asset }) {
   const is3DModel = /\.(glb|gltf|obj|fbx)$/i.test(src);
   const isImage = /\.(jpg|jpeg|png|gif|webp|jfif)$/i.test(src);
 
-  // Generate random height for masonry effect (Pinterest style)
-  const getRandomHeight = () => {
-    const heights = [250, 300, 350, 400, 450];
-    return heights[Math.floor(Math.random() * heights.length)];
-  };
-
   return (
-    <a href={`/assets/${asset.id}`} className={styles.cellLink}>
-      <div className={styles.assetCell}>
-        <div 
-          className={styles.mediaWrapper}
-          style={{ 
-            height: is3DModel ? '280px' : isImage ? 'auto' : '200px'
-          }}
-        >
-          {is3DModel ? (
-            <MiniModelViewer url={src} />
-          ) : isImage ? (
-            <div className={styles.imageContainer}>
-              {!imageLoaded && !imageError && (
-                <div className={styles.imagePlaceholder}>
-                  <div className={styles.loadingSpinner}></div>
-                </div>
-              )}
-              <img
-                src={src}
-                alt={asset.title || 'Asset'}
-                className={`${styles.assetImage} ${imageLoaded ? styles.loaded : ''}`}
-                onLoad={() => setImageLoaded(true)}
-                onError={() => {
-                  setImageError(true);
-                  setImageLoaded(true);
-                }}
-                style={{ display: imageError ? 'none' : 'block' }}
-              />
-              {imageError && (
-                <div className={styles.errorPlaceholder}>
-                  <div className={styles.errorIcon}>🖼️</div>
-                  <span>Image unavailable</span>
-                </div>
-              )}
+    <>
+      <a href={`/assets/${asset.id}`} className={styles.cellLink}>
+        <div className={styles.assetCell}>
+          <div
+            className={styles.mediaWrapper}
+            style={{
+              height: is3DModel ? '280px' : isImage ? 'auto' : '200px',
+            }}
+          >
+            {is3DModel ? (
+              <MiniModelViewer url={src} />
+            ) : isImage ? (
+              <div className={styles.imageContainer}>
+                {!imageLoaded && !imageError && (
+                  <div className={styles.imagePlaceholder}>
+                    <div className={styles.loadingSpinner}></div>
+                  </div>
+                )}
+                <img
+                  src={src}
+                  alt={asset.title || 'Asset'}
+                  className={`${styles.assetImage} ${imageLoaded ? styles.loaded : ''}`}
+                  onLoad={() => setImageLoaded(true)}
+                  onError={() => {
+                    setImageError(true);
+                    setImageLoaded(true);
+                  }}
+                  style={{ display: imageError ? 'none' : 'block' }}
+                />
+                {imageError && (
+                  <div className={styles.errorPlaceholder}>
+                    <div className={styles.errorIcon}>🖼️</div>
+                    <span>Image unavailable</span>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className={styles.filePlaceholder}>
+                <div className={styles.fileIcon}>📄</div>
+                <span className={styles.fileType}>
+                  {src.split('.').pop()?.toUpperCase() || 'FILE'}
+                </span>
+              </div>
+            )}
+
+            <div className={styles.overlay}>
+              <div className={styles.overlayContent}>
+                <button className={styles.viewButton}>View Details</button>
+                <button
+                  className={styles.viewButton}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowModal(true);
+                  }}
+                >
+                  Add to Collection
+                </button>
+              </div>
             </div>
-          ) : (
-            <div className={styles.filePlaceholder}>
-              <div className={styles.fileIcon}>📄</div>
-              <span className={styles.fileType}>
-                {src.split('.').pop()?.toUpperCase() || 'FILE'}
-              </span>
+          </div>
+
+          {(asset.title || asset.description) && (
+            <div className={styles.assetInfo}>
+              {asset.title && <h3 className={styles.assetTitle}>{asset.title}</h3>}
+              {asset.description && (
+                <p className={styles.assetDescription}>
+                  {asset.description.length > 80
+                    ? `${asset.description.substring(0, 80)}...`
+                    : asset.description}
+                </p>
+              )}
             </div>
           )}
-          
-          <div className={styles.overlay}>
-            <div className={styles.overlayContent}>
-              <button className={styles.viewButton}>View Details</button>
-            </div>
-          </div>
         </div>
+      </a>
 
-        {(asset.title || asset.description) && (
-          <div className={styles.assetInfo}>
-            {asset.title && (
-              <h3 className={styles.assetTitle}>{asset.title}</h3>
-            )}
-            {asset.description && (
-              <p className={styles.assetDescription}>
-                {asset.description.length > 80 
-                  ? `${asset.description.substring(0, 80)}...` 
-                  : asset.description
-                }
-              </p>
-            )}
-          </div>
-        )}
-      </div>
-    {/* content */}
-    </a>
+      {showModal && (
+        <AddToCollectionModal
+          assetId={asset.id}
+          onClose={() => setShowModal(false)}
+        />
+      )}
+    </>
   );
 }

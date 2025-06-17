@@ -20,10 +20,15 @@ collection_asset_detail = CollectionAssetViewSet.as_view({
     'delete': 'destroy'
 })
 
+collection_assets = CollectionViewSet.as_view({
+    'get': 'assets'
+})
+
 
 urlpatterns = [
     path('collections/', collection_list),
     path('collections/<int:pk>/', collection_detail),
+    path('collections/assets/<int:pk>/', collection_assets),
     path('collection-assets/', collection_asset_list),
     path('collection-assets/<int:pk>/', collection_asset_detail),
 ]
