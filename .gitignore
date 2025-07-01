@@ -12,6 +12,6 @@ test/
 # Ignore all __pycache__ directories anywhere
 __pycache__/
 uploaded_assets/
-Assets/
+assets2
 DeepImageSearch/
 antelope/
