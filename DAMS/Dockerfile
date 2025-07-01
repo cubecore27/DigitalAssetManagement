@@ -38,8 +38,8 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn
 
-# Preload the mobileone_s0 model from timm so it's cached in image
-# RUN python -c "import timm; timm.create_model('mobileone_s0', pretrained=True)"
+# Preload the mobileone_s4 model from timm so it's cached in image
+# RUN python -c "import timm; timm.create_model('mobileone_s4', pretrained=True)"
 
 # Copy the project source code
 COPY . .

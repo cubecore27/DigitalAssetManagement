@@ -6,6 +6,9 @@ from django.shortcuts import get_object_or_404
 
 # Required to prevent OpenMP conflicts
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+os.environ["CUDA_VISIBLE_DEVICES"] = ""     # Disables GPU
+os.environ["OMP_NUM_THREADS"] = "1"         # Limits CPU parallelism
+os.environ["MKL_NUM_THREADS"] = "1"         # Reduces memory spikes
 
 from DeepImageSearch import Load_Data, Search_Setup
 from unittest.mock import patch
@@ -27,7 +30,7 @@ class ImageIndexingView(APIView):
 
             st = Search_Setup(
                 image_list=image_list,
-                model_name='mobileone_s0',
+                model_name='mobileone_s4',
                 pretrained=True,
                 image_count=100
             )
@@ -71,7 +74,7 @@ class SimilarAssetAPIView(APIView):
 
         st = Search_Setup(
             image_list=image_list,
-            model_name='mobileone_s0',
+            model_name='mobileone_s4',
             pretrained=True,
             image_count=len(image_list)
         )
