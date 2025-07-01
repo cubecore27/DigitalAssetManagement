@@ -38,8 +38,8 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn
 
-# Preload the resnet18.a1_in1k model from timm so it's cached in image
-# RUN python -c "import timm; timm.create_model('resnet18.a1_in1k', pretrained=True)"
+# Preload the mobileone_s0 model from timm so it's cached in image
+# RUN python -c "import timm; timm.create_model('mobileone_s0', pretrained=True)"
 
 # Copy the project source code
 COPY . .
