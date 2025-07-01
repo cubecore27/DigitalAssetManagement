@@ -18,7 +18,7 @@ const SystemStats = () => {
     // Replace with your actual API call when ready
     const fetchStats = async () => {
       try {
-        const response = await axios.get('http://localhost:2000/settings/system-stats/');
+        const response = await axios.get('https://dams-production.up.railway.app//settings/system-stats/');
         setStats(response.data);
         setLoading(false);
       } catch (error) {

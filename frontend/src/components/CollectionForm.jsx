@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './CollectionManager.module.css';
 
-const API_URL = 'http://localhost:2000/collection/collections/';
+const API_URL = 'https://dams-production.up.railway.app//collection/collections/';
 
 const CollectionForm = ({ initialData, onSuccess }) => {
   const [formData, setFormData] = useState({

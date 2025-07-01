@@ -4,7 +4,7 @@ import styles from './CreateAsset.module.css';
 import SearchNavbar from '../../components/RetractableSearchBar';
 import SettingsNav from '../../components/SettingNav';
 
-const API_BASE = 'http://192.168.100.6:2000/';
+const API_BASE = 'https://digitalassetmanagement-production.up.railway.app/';
 
 export default function CreateAsset() {
   const [file, setFile] = useState(null);

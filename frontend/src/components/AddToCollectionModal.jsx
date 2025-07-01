@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './AssetCell.module.css';
 
-const API_BASE = 'http://192.168.100.6:2000/';
+const API_BASE = 'https://digitalassetmanagement-production.up.railway.app/';
 
 export default function AddToCollectionModal({ assetId, onClose }) {
   const [collections, setCollections] = useState([]);

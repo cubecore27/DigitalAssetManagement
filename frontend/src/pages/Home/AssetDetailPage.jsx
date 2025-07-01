@@ -9,7 +9,7 @@ import AssetGrid from '../../components/AssetGrid';
 import styles from './AssetDetail.module.css';
 import ModelViewer from '../../components/ModelViewer';
 
-const API_BASE = 'http://192.168.100.6:2000/';
+const API_BASE = 'https://digitalassetmanagement-production.up.railway.app/';
 
 function FullModelViewer({ url }) {
   const Model = () => {

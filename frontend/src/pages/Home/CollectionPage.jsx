@@ -10,7 +10,7 @@ export default function CollectionPage() {
 
   // Fetch collections list on load
   useEffect(() => {
-    fetch('http://192.168.100.6:2000/collections/')
+    fetch('https://digitalassetmanagement-production.up.railway.app/collections/')
       .then(res => res.json())
       .then(data => setCollections(data));
   }, []);
@@ -18,7 +18,7 @@ export default function CollectionPage() {
   // Fetch assets when a collection is selected
   useEffect(() => {
     if (selectedCollectionId !== null) {
-      fetch(`http://192.168.100.6:2000/collections/assets/${selectedCollectionId}/`)
+      fetch(`https://digitalassetmanagement-production.up.railway.app/collections/assets/${selectedCollectionId}/`)
         .then(res => res.json())
         .then(data => setAssets(data));
     }

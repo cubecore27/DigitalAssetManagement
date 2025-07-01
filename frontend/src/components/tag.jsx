@@ -3,7 +3,7 @@ import axios from 'axios';
 import { SketchPicker } from 'react-color';
 import styles from './tag.module.css';
 
-const API_URL = 'http://192.168.100.6:2000/tags/tags/';
+const API_URL = 'https://digitalassetmanagement-production.up.railway.app/tags/tags/';
 
 export default function TagManager() {
   const [tags, setTags] = useState([]);

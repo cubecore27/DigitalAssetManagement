@@ -3,7 +3,7 @@ import axios from 'axios';
 import CollectionForm from './CollectionForm';
 import styles from './CollectionManager.module.css';
 
-const API_URL = 'http://localhost:2000/collection/collections/'; // adjust as needed
+const API_URL = 'https://dams-production.up.railway.app//collection/collections/'; // adjust as needed
 
 const CollectionManager = () => {
   const [collections, setCollections] = useState([]);

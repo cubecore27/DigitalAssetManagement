@@ -10,12 +10,12 @@ export default function CollectionViewer() {
 
   useEffect(() => {
     // Get assets in the collection
-    fetch(`http://192.168.100.6:2000/collection/collections/assets/${id}/`)
+    fetch(`https://digitalassetmanagement-production.up.railway.app/collection/collections/assets/${id}/`)
       .then(res => res.json())
       .then(data => setAssets(data));
 
     // Optional: fetch collection metadata
-    // fetch(`http://192.168.100.6:2000/assets/${id}/`)
+    // fetch(`https://digitalassetmanagement-production.up.railway.app/assets/${id}/`)
     //   .then(res => res.json())
     //   .then(data => setCollection(data));
   }, []);

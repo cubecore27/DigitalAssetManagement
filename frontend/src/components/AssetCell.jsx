@@ -4,7 +4,7 @@ import { OrbitControls, useGLTF, Bounds } from '@react-three/drei';
 import styles from './AssetCell.module.css';
 import AddToCollectionModal from './AddToCollectionModal'; // 👈 Import the modal component
 
-const API_BASE = 'http://192.168.100.6:2000/';
+const API_BASE = 'https://digitalassetmanagement-production.up.railway.app/';
 
 function MiniModelViewer({ url }) {
   const Model = () => {

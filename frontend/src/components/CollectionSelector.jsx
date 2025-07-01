@@ -7,7 +7,7 @@ export default function CollectionSelector() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://192.168.100.6:2000/collection/collections/')
+    fetch('https://digitalassetmanagement-production.up.railway.app/collection/collections/')
       .then(res => res.json())
       .then(data => {
         // Normalize asset_count from assets[]

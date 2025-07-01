@@ -12,7 +12,7 @@ export default function InspirePage() {
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      const url = new URL('http://192.168.100.6:2000/asset/assets/');
+      const url = new URL('https://digitalassetmanagement-production.up.railway.app/asset/assets/');
       if (searchQuery) url.searchParams.append('search', searchQuery);
       if (assetType) url.searchParams.append('asset_type', assetType);
 

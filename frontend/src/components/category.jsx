@@ -7,7 +7,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import styles from './category.module.css';
 
-const API_BASE = 'http://192.168.100.6:2000/';
+const API_BASE = 'https://digitalassetmanagement-production.up.railway.app/';
 
 function CategoryItem({ category, depth, onRefresh }) {
   const [expanded, setExpanded] = useState(false);
