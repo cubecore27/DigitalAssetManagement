@@ -10,4 +10,4 @@ python manage.py collectstatic --noinput
 
 
 # Start Gunicorn server
-gunicorn DAMS.wsgi.application --bind 0.0.0.0:8000
+gunicorn DAMS.wsgi:application --bind 0.0.0.0:8000
