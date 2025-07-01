@@ -23,26 +23,33 @@ ENV DATABASE_URL=${DATABASE_URL}
 ENV DJANGO_ENV=${DJANGO_ENV}
 ENV PYTHONUNBUFFERED=1
 
-# System deps
+# System dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
     libglib2.0-0 libsm6 libxrender1 libxext6 \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python deps
+# Copy requirements first to leverage Docker caching
 COPY requirements.txt .
+
+# Upgrade pip and install Python dependencies
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn
 
-# Copy source
+# Preload the convnext_tiny model from timm so it's cached in image
+RUN python -c "import timm; timm.create_model('convnext_tiny', pretrained=True)"
+
+# Copy the project source code
 COPY . .
 
 # Expose port
 EXPOSE 8000
 
-# Start
+# Copy start script
 COPY start.sh .
 RUN chmod +x start.sh
+
+# Entrypoint
 CMD ["sh", "start.sh"]

@@ -8,9 +8,13 @@ import CreateCollection from '../../components/collection'
 export default function SettingCollectionPage() {
   return (
     <>
-        <div>
+    <div
+          style={{width: '100%'}}>
+          <SettingsNav/>
+          <div>
           <CreateCollection/>
         </div>
+    </div>
     </>
 
   )

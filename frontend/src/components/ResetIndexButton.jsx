@@ -10,7 +10,7 @@ const ResetIndexButton = () => {
     setMessage('');
 
     try {
-      const response = await axios.post('https://dams-production.up.railway.app//search/index/');
+      const response = await axios.post('https://digitalassetmanagement-production.up.railway.app/search/index/');
       setMessage(response.data.detail + ` (${response.data.image_count} images indexed)`);
     } catch (error) {
       setMessage(
