@@ -27,7 +27,7 @@ class ImageIndexingView(APIView):
 
             st = Search_Setup(
                 image_list=image_list,
-                model_name='vgg19',
+                model_name='convnext_tiny',
                 pretrained=True,
                 image_count=100
             )
@@ -48,8 +48,21 @@ class SimilarAssetAPIView(APIView):
         asset = get_object_or_404(Asset, id=asset_id)
 
         if asset.asset_type != 'image':
-            return Response({'error': 'Asset is not an image'},
-                            status=status.HTTP_400_BAD_REQUEST)
+            # Fetch 30 random image assets
+            random_images = Asset.objects.filter(asset_type='image').order_by('?')[:30]
+            response_data = [
+                {
+                    "id": a.id,
+                    "title": a.title,
+                    "description": a.description,
+                    "created_at": a.created_at.isoformat(),
+                    "updated_at": a.updated_at.isoformat(),
+                    "file_path": a.file_path,
+                    "asset_type": a.asset_type,
+                }
+                for a in random_images
+            ]
+            return Response(response_data, status=status.HTTP_200_OK)
 
         os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
@@ -58,7 +71,7 @@ class SimilarAssetAPIView(APIView):
 
         st = Search_Setup(
             image_list=image_list,
-            model_name='vgg19',
+            model_name='convnext_tiny',
             pretrained=True,
             image_count=len(image_list)
         )
