@@ -27,7 +27,7 @@ class ImageIndexingView(APIView):
 
             st = Search_Setup(
                 image_list=image_list,
-                model_name='mobilenet_v2',
+                model_name='resnet50',
                 pretrained=True,
                 image_count=100
             )
@@ -71,7 +71,7 @@ class SimilarAssetAPIView(APIView):
 
         st = Search_Setup(
             image_list=image_list,
-            model_name='mobilenet_v2',
+            model_name='resnet50',
             pretrained=True,
             image_count=len(image_list)
         )
