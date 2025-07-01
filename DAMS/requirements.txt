@@ -1,4 +1,4 @@
---index-url https://download.pytorch.org/whl/cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
 
 DeepImageSearch==2.5
 Django==5.2.3
