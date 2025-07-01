@@ -39,7 +39,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn
 
 # Preload the mobilenet_v2 model from timm so it's cached in image
-RUN python -c "import timm; timm.create_model('mobilenet_v2', pretrained=True)"
+# RUN python -c "import timm; timm.create_model('mobilenet_v2', pretrained=True)"
 
 # Copy the project source code
 COPY . .
